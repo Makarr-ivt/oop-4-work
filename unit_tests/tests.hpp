@@ -1,12 +1,55 @@
 #pragma once
+#include <cassert>
+#include "HashTableV1.hpp"
+#include <iostream>
+using namespace std;
 
-int run_all_tests();
-int test_default_constructor();
-int test_copy_constructor();
-int test_change_in_size();
-int test_add_operator();
-int test_intersection();
-int test_file_data_exchange();
-// юнит тесты -- это автоматические тесты, которые тестируют конкретные части программы:
-// модули или функции в частности.
-// есть типа ещё юзер тесты или типа того, которые ты вручную делаешь
+
+template<typename T> // Hashtable V1 or V2
+int test_default_constructor() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_copy_constructor() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_change_in_size() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_add_operator() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_equality_operator() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_intersection() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int test_file_data_exchange() {
+    return 0;
+}
+
+template<typename T> // Hashtable V1 or V2
+int run_all_tests() {
+    int fails_counter = 0;
+    fails_counter += test_default_constructor<T>();
+    fails_counter += test_copy_constructor<T>();
+    fails_counter += test_change_in_size<T>();
+    fails_counter += test_add_operator<T>();
+    fails_counter += test_equality_operator<T>();
+    fails_counter += test_intersection<T>();
+    fails_counter += test_file_data_exchange<T>();
+    cout << fails_counter << " tests were failed!\n";
+    return fails_counter;
+}

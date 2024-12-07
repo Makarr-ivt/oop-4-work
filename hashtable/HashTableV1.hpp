@@ -35,7 +35,7 @@ public:
     }
 
     HashTableV1(HashTableV1& other) = default;
-    HashTableV1(const string& path, const string& sep=" : ") {};
+    HashTableV1(const string& path) {};
     ~HashTableV1() = default;
 
     void insert(const Key& key, const Value& value) {

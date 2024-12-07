@@ -6,7 +6,7 @@ using namespace std;
 #include "HashTableV1.hpp"
 
 int main() {
-    if (run_all_tests() != 0) {
+    if (run_all_tests<HashTableV1<string, int>>() != 0) {
         return 1;
     }
     HashTableV1<string, int> ht;

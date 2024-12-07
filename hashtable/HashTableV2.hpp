@@ -20,7 +20,23 @@ public:
     ~HashTableV1() = default;
     HashTableV1(const string& path, const string& sep=" : ") {};
     
-    void insert(const Key& key, const Value& value);
+    void insert(const Key& key, const Value& value) {
+        if (size * 100 / data.size() > REALLOC_FACTOR) {
+            resize_data();
+        }
+        size_t index = my_hash(key, data.size());
+        for (auto i = 0; i < data.size(); ++i) {
+            if (data[index + i].is_used) {
+                continue;
+            }
+            data[index + i].key = key;
+            data[index + i].value = value;
+            data[index + i].is_used = true;
+            ++size;
+            return;
+        }
+    }
+    
     bool remove(const Key& key);
 
     void clear();

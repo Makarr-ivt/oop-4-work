@@ -20,6 +20,9 @@ struct ElementV1 {
     Value value{};
     bool is_used = false;
     ElementV1 *next = nullptr;
+    bool operator== (const ElementV1& other) const {
+        return key == other.key && value == other.value && is_used == other.is_used;
+    }
 };
 
 template<typename Key, typename Value>
@@ -116,6 +119,9 @@ public:
 
     bool operator==(const HashTableV1& other) const {
         return data == other.data;   
+    }
+    bool operator!=(const HashTableV1& other) const {
+        return data != other.data;   
     }
 
     HashTableV1 operator&&(const HashTableV1& other) const;

@@ -29,9 +29,9 @@ public:
     HashTableV1() : size(0), data(START_CAPACITY) {
         // Проверяем, можно ли вывести Key и Value в поток
         static_assert(is_output_streamable<Key>::value,
-        "Key не может быть выведен в поток.");
+        "Key не может быть выведен в поток!\n");
         static_assert(is_output_streamable<Value>::value,
-        "Value не может быть выведен в поток.");
+        "Value не может быть выведен в поток!\n");
     }
 
     HashTableV1(HashTableV1& other) = default;
@@ -72,6 +72,7 @@ public:
                 continue;
             }
             data[index + i].is_used = false;
+            --size;
             break; 
         }
     }

@@ -13,12 +13,12 @@ struct ElementV2 {
 template<typename Key, typename Value>
 class HashTableV2 final {
 public:
-    HashTableV1() 
+    HashTableV2() 
         : size(0),
         data(START_CAPACITY) {};
-    HashTableV1(HashTableV1& other) = default;
-    ~HashTableV1() = default;
-    HashTableV1(const string& path, const string& sep=" : ") {};
+    HashTableV2(HashTableV2& other) = default;
+    ~HashTableV2() = default;
+    HashTableV2(const string& path, const string& sep=" : ") {};
     
     void insert(const Key& key, const Value& value) {
         if (size * 100 / data.size() > REALLOC_FACTOR) {
@@ -46,8 +46,8 @@ public:
     void load_to_file(const string& path, const string& sep) const;
 
     Value& operator[](const Key& key);
-    bool operator<<(const HashTableV1& other) const;
-    HashTableV1 operator&&(const HashTableV1& other) const;
+    bool operator<<(const HashTableV2& other) const;
+    HashTableV2 operator&&(const HashTableV2& other) const;
 private:
     size_t size;
     vector<ElementV2<Key, Value>> data;    

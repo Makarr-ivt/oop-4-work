@@ -7,7 +7,7 @@ template<typename Key, typename Value>
 struct ElementV2 {
     Key key{};
     Value value{};
-    bool is_deleted = false;
+    bool is_used = false;
 };
 
 template<typename Key, typename Value>

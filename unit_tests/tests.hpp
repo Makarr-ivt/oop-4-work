@@ -8,8 +8,7 @@ using namespace std;
 
 template<typename T> // template for HashTable V1 or V2
 int test_default_constructor() {
-    assert(T example
-    && "default constructor fails!\n");
+    T example;
     assert(example.get_size() == 0
     && "default constructor creates wrong start size!\n");
     assert(example.is_empty() == true
@@ -24,15 +23,15 @@ int test_copy_constructor() {
     ht.insert("second", "");
     ht.insert("third", "something else");
     T ht2(ht);
-    assert(ht == ht2
+    assert(ht == ht2 // here i also test operator==
     && "copied hashtable must be equal to original!");
 
     ht2.remove("second");
-    assert(!(ht == ht2) // here i also test operator==
+    assert(ht != ht2 // here i also test operator!=
     && "change in copy must not modify original!");
 
     ht.clear();
-    assert(!(ht == ht2) // here i also test operator==
+    assert(ht != ht2 // here i also test operator!=
     && "change in original must not modify copy!");
     return 0;
 }

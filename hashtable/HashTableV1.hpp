@@ -8,13 +8,13 @@ using namespace std;
 
 
 template<typename Key, typename Value>
-struct ElementV1 {
+struct ItemV1 {
     Key key{};
     Value value{};
     bool is_used = false;
-    ElementV1<Key, Value> *next = nullptr;
+    ItemV1<Key, Value> *next = nullptr;
 
-    bool operator== (const ElementV1& other) const {
+    bool operator== (const ItemV1& other) const {
         return key == other.key && value == other.value && is_used == other.is_used;
     }
 };
@@ -55,7 +55,7 @@ public:
             return;
         }
         // Если ячейка занята, пробуем найти свободное место в цепочке
-        ElementV1<Key, Value>* current = &data[index];
+        ItemV1<Key, Value>* current = &data[index];
         while (current->next != nullptr) {
             // Если ключ уже существует в цепочке, обновляем значение
             if (current->key == key) {
@@ -67,7 +67,7 @@ public:
             current = current->next;
         }
         // В конце цепочки нет элемента с данным ключом, добавляем новый
-        current->next = new ElementV1<Key, Value>{key, value, true, nullptr};
+        current->next = new ItemV1<Key, Value>{key, value, true, nullptr};
         ++size;
     }
 
@@ -84,7 +84,7 @@ public:
     }
 
     void clear() {
-        vector<ElementV1<Key, Value>> cleared_data(START_CAPACITY);
+        vector<ItemV1<Key, Value>> cleared_data(START_CAPACITY);
         data = move(cleared_data);
         size = 0;
     }
@@ -95,7 +95,7 @@ public:
 
     bool is_contains(const Key& key) const {
         size_t index = my_hash(key, data.size());
-        const ElementV1<Key, Value>* current = &data[index];
+        const ItemV1<Key, Value>* current = &data[index];
         if (current->key == key && current->is_used) {
             return true;
         }
@@ -115,7 +115,7 @@ public:
     void load_to_file(const string& path) const {
         ofstream file(path);
         for (auto index = 0; index < data.size(); ++index) {
-            const ElementV1<Key, Value>* current = &data[index];
+            const ItemV1<Key, Value>* current = &data[index];
             if (current->is_used) {
                 file << current->key << " " << current->value << "\n";    
             }
@@ -134,7 +134,7 @@ public:
         size_t index = my_hash(key, data.size()); // Получаем индекс
 
         // Ищем элемент в корзине
-        ElementV1<Key, Value>* current = &data[index]; // Предполагаем, что первый элемент в этой корзине
+        ItemV1<Key, Value>* current = &data[index]; // Предполагаем, что первый элемент в этой корзине
 
         // Перебираем цепочку элементов
         while (current != nullptr) {
@@ -158,7 +158,7 @@ public:
     // Rvalue
     Value operator[](const Key& key) const {
         size_t index = my_hash(key, data.size());
-        const ElementV1<Key, Value>* current = &data[index];
+        const ItemV1<Key, Value>* current = &data[index];
 
         while (current != nullptr) {
             if (current->is_used && current->key == key) {
@@ -180,7 +180,7 @@ public:
     HashTableV1<Key, Value> operator&&(const HashTableV1<Key, Value>& other) const {
         HashTableV1<Key, Value> result;
         for (auto index = 0; index < data.size(); ++index) {
-            const ElementV1<Key, Value>* current = &data[index];        
+            const ItemV1<Key, Value>* current = &data[index];        
             while (current != nullptr) {
                 if (current->is_used
                 && other.is_contains(current->key)
@@ -197,7 +197,7 @@ public:
     void print() {
         cout << "{\n";
         for (auto index = 0; index < data.size(); ++index) {
-            const ElementV1<Key, Value>* current = &data[index];
+            const ItemV1<Key, Value>* current = &data[index];
             if (current->is_used) {
                 cout <<"\t'"<< current->key << "' : '" << current->value << "'\n";    
             }
@@ -213,7 +213,7 @@ public:
 
 private:
     size_t size;
-    vector<ElementV1<Key, Value>> data;    
+    vector<ItemV1<Key, Value>> data;    
     
     size_t my_hash(const Key& key, size_t capacity) const {
         size_t hash = 17;

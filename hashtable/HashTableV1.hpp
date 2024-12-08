@@ -45,7 +45,7 @@ public:
     ~HashTableV1() = default;
 
     void insert(const Key& key, const Value& value) override {
-        size_t index = my_hash(key, data.size());
+        size_t index = this->my_hash(key, data.size());
         if (!data[index].is_used) {
             data[index].key = key;
             data[index].value = value;
@@ -68,7 +68,7 @@ public:
     }
 
     void remove(const Key& key) override {
-        size_t index = my_hash(key, data.size());
+        size_t index = this->my_hash(key, data.size());
         for (auto i = 0; i < data.size(); ++i) {
             if (key != data[index + i].key) {
                 continue;
@@ -86,7 +86,7 @@ public:
     }
 
     bool is_contains(const Key& key) const override {
-        size_t index = my_hash(key, data.size());
+        size_t index = this->my_hash(key, data.size());
         const ItemV1<Key, Value>* current = &data[index];
         if (current->key == key && current->is_used) {
             return true;
@@ -135,7 +135,7 @@ public:
 
     // Lvalue
     Value& operator[](const Key& key) override {
-        size_t index = my_hash(key, data.size());
+        size_t index = this->my_hash(key, data.size());
         if (!is_contains(key)) {
             insert(key, Value());
         }
@@ -151,7 +151,7 @@ public:
 
     // Rvalue
     Value operator[](const Key& key) const override {
-        size_t index = my_hash(key, data.size());
+        size_t index = this->my_hash(key, data.size());
         const ItemV1<Key, Value>* current = &data[index];
 
         while (current != nullptr) {
@@ -180,7 +180,7 @@ public:
     }
 
 
-    void print() {
+    void print() const override {
         cout << "{\n";
         for (auto index = 0; index < data.size(); ++index) {
             const ItemV1<Key, Value>* current = &data[index];

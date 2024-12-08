@@ -165,6 +165,17 @@ public:
         }
         return result;
     }
+
+    void print() const override {
+        cout << "{\n";
+        for (auto index = 0; index < data.size(); ++index) {
+            auto current = data[index];
+            if (current.is_used) {
+                cout <<"\t'"<< current.key << "' : '" << current.value << "'\n";    
+            }
+        }
+        cout << "}\n";
+    }
  
 private:
     size_t size;

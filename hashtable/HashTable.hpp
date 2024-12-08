@@ -3,13 +3,12 @@
 template<typename Key, typename Value>
 class HashTable {
 public:
-    HashTable() = delete;
-    
     virtual void insert(const Key& key, const Value& value) = 0;
     virtual void remove(const Key& key) = 0;
     virtual void clear() = 0;
     virtual bool is_contains(const Key& key) const = 0;
     virtual void load_to_file(const string& path) const = 0;
+    virtual void print() const = 0;
     
     // Lvalue
     virtual Value& operator[](const Key& key) = 0;

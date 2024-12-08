@@ -5,10 +5,11 @@
 using namespace std;
 #include "HashTableV1.hpp"
 
+
 int main() {
-    if (run_all_tests<HashTableV1<string, string>>() != 0) {
+    if (run_all_tests<HashTableV2<string, string>>() != 0) {
         return 1;
     }
-    
+
     return 0;
 }

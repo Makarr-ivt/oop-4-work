@@ -4,6 +4,7 @@
 #include <fstream>
 #include "constants.hpp"
 #include "is_convertible.hpp"
+#include "HashTable.hpp"
 using namespace std;
 
 
@@ -13,14 +14,13 @@ struct ItemV1 {
     Value value{};
     bool is_used = false;
     ItemV1<Key, Value> *next = nullptr;
-
     bool operator== (const ItemV1& other) const {
         return key == other.key && value == other.value && is_used == other.is_used;
     }
 };
 
 template<typename Key, typename Value>
-class HashTableV1 final {
+class HashTableV1 final : public HashTable<Key, Value> {
 public:
 
     HashTableV1() : size(0), data(START_CAPACITY) {
@@ -44,7 +44,7 @@ public:
 
     ~HashTableV1() = default;
 
-    void insert(const Key& key, const Value& value) {
+    void insert(const Key& key, const Value& value) override {
         size_t index = my_hash(key, data.size());
         if (!data[index].is_used) {
             data[index].key = key;
@@ -67,7 +67,7 @@ public:
         ++size;
     }
 
-    void remove(const Key& key) {
+    void remove(const Key& key) override {
         size_t index = my_hash(key, data.size());
         for (auto i = 0; i < data.size(); ++i) {
             if (key != data[index + i].key) {
@@ -79,17 +79,13 @@ public:
         }
     }
 
-    void clear() {
+    void clear() override {
         vector<ItemV1<Key, Value>> cleared_data(START_CAPACITY);
         data = move(cleared_data);
         size = 0;
     }
 
-    size_t get_size() const {
-        return size;
-    }
-
-    bool is_contains(const Key& key) const {
+    bool is_contains(const Key& key) const override {
         size_t index = my_hash(key, data.size());
         const ItemV1<Key, Value>* current = &data[index];
         if (current->key == key && current->is_used) {
@@ -104,11 +100,7 @@ public:
         return false;
     }
     
-    bool is_empty() const {
-        return size == 0;
-    }
-
-    void load_to_file(const string& path) const {
+    void load_to_file(const string& path) const override {
         ofstream file(path);
         for (auto index = 0; index < data.size(); ++index) {
             const ItemV1<Key, Value>* current = &data[index];
@@ -125,8 +117,24 @@ public:
         file.close();
     }
 
+        size_t get_size() const {
+        return size;
+    }
+
+    bool is_empty() const {
+        return size == 0;
+    }
+
+    bool operator==(const HashTableV1<Key, Value>& other) const {
+        return data == other.data;   
+    }
+
+    bool operator!=(const HashTableV1<Key, Value>& other) const {
+        return data != other.data;   
+    }
+
     // Lvalue
-    Value& operator[](const Key& key) {
+    Value& operator[](const Key& key) override {
         size_t index = my_hash(key, data.size());
         if (!is_contains(key)) {
             insert(key, Value());
@@ -142,7 +150,7 @@ public:
     }
 
     // Rvalue
-    Value operator[](const Key& key) const {
+    Value operator[](const Key& key) const override {
         size_t index = my_hash(key, data.size());
         const ItemV1<Key, Value>* current = &data[index];
 
@@ -152,15 +160,7 @@ public:
             }
             current = current->next;
         }
-        return Value(); // default value
-    }
-
-    bool operator==(const HashTableV1& other) const {
-        return data == other.data;   
-    }
-
-    bool operator!=(const HashTableV1& other) const {
-        return data != other.data;   
+        throw runtime_error("Key not found");
     }
 
     HashTableV1<Key, Value> operator&&(const HashTableV1<Key, Value>& other) const {
@@ -200,12 +200,4 @@ public:
 private:
     size_t size;
     vector<ItemV1<Key, Value>> data;    
-    
-    size_t my_hash(const Key& key, size_t capacity) const {
-        size_t hash = 17;
-        for (const char c : key) { 
-            hash = hash * 23 + 3 * c + 4; 
-        }
-        return hash % capacity;
-    }
 };

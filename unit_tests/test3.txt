@@ -1,1 +1,6 @@
-// этот файл должен заполняться через метод load_to_file()
+k2 v2
+new_key new_value
+testK1 testV1
+k3 v3
+k4 v4
+k5 v5

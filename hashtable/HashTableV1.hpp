@@ -144,18 +144,15 @@ public:
             }
             current = current->next;
         }
-
-        // Если ключ не найден, используем метод insert для добавления нового элемента
         insert(key, Value());
-        // Снова ищем вновь добавленный элемент (поиск начинается с того же индекса)
         current = &data[index]; // Обновляем указатель на начало цепочки
         do {
             if (current->is_used && current->key == key) {
-                // Возвращаем ссылку на значение нового элемента
-                return current->value;
+                break;
             }
             current = current->next;
         } while (current != nullptr);
+        return current->value;
     }
 
     // Rvalue

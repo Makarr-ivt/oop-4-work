@@ -24,7 +24,6 @@ class HashTableV1 final {
 public:
 
     HashTableV1() : size(0), data(START_CAPACITY) {
-        // Проверяем, можно ли вывести Key и Value в поток
         static_assert(is_output_streamable<Key>::value,
         "Key не может быть выведен в поток!\n");
         static_assert(is_output_streamable<Value>::value,
@@ -54,10 +53,8 @@ public:
             ++size;
             return;
         }
-        // Если ячейка занята, пробуем найти свободное место в цепочке
         ItemV1<Key, Value>* current = &data[index];
         while (current->next != nullptr) {
-            // Если ключ уже существует в цепочке, обновляем значение
             if (current->key == key) {
                 current->value = value;
                 current->is_used = true;
@@ -66,7 +63,6 @@ public:
             }
             current = current->next;
         }
-        // В конце цепочки нет элемента с данным ключом, добавляем новый
         current->next = new ItemV1<Key, Value>{key, value, true, nullptr};
         ++size;
     }
@@ -131,21 +127,11 @@ public:
 
     // Lvalue
     Value& operator[](const Key& key) {
-        size_t index = my_hash(key, data.size()); // Получаем индекс
-
-        // Ищем элемент в корзине
-        ItemV1<Key, Value>* current = &data[index]; // Предполагаем, что первый элемент в этой корзине
-
-        // Перебираем цепочку элементов
-        while (current != nullptr) {
-            if (current->is_used && current->key == key) {
-                // Если ключ найден, возвращаем ссылку на его значение
-                return current->value;
-            }
-            current = current->next;
+        size_t index = my_hash(key, data.size());
+        if (!is_contains(key)) {
+            insert(key, Value());
         }
-        insert(key, Value());
-        current = &data[index]; // Обновляем указатель на начало цепочки
+        ItemV1<Key, Value>* current = &data[index];
         do {
             if (current->is_used && current->key == key) {
                 break;
@@ -166,7 +152,7 @@ public:
             }
             current = current->next;
         }
-        return Value(); // Возвращаем значение по умолчанию, если ключ не найден
+        return Value(); // default value
     }
 
     bool operator==(const HashTableV1& other) const {

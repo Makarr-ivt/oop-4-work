@@ -67,8 +67,12 @@ int test_file_data_exchange() {
     T ht1("D:/oop_4_work_final/unit_tests/test1.txt");
     assert(ht1.get_size() == 5
     && "ht1 must contain 5 items!");
-    assert(ht1["k2"] == "v2");
+    assert(ht1["k2"] == "v2"); // rvalue [] test
     assert(ht1.is_contains("k5"));
+    ht1["new_key"] = "new_value"; // lvalue [] test
+    ht1.load_to_file("D:/oop_4_work_final/unit_tests/test3.txt");
+    T ht2("D:/oop_4_work_final/unit_tests/test3.txt");
+    assert(ht2.get_size() == 6);
     return 0;
 }
 

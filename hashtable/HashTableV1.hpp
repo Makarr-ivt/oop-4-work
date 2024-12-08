@@ -5,12 +5,7 @@
 #include "constants.hpp"
 #include "is_convertible.hpp"
 using namespace std;
-/* TODO:
-- void load_to_file(const string& path, const string& sep) const;
-- тесты
-- вторую хэш-таблицу
-- cli
-*/
+
 
 template<typename Key, typename Value>
 struct ElementV1 {
@@ -117,7 +112,22 @@ public:
         return size == 0;
     }
 
-    void load_to_file(const string& path) const;
+    void load_to_file(const string& path) const {
+        ofstream file(path);
+        for (auto index = 0; index < data.size(); ++index) {
+            const ElementV1<Key, Value>* current = &data[index];
+            if (current->is_used) {
+                file << current->key << " " << current->value << "\n";    
+            }
+            while (current->next != nullptr) {   
+                current = current->next;
+                if (current->is_used) {
+                    file << current->key << " " << current->value << "\n";    
+                }
+            } 
+        }
+        file.close();
+    }
 
     // Lvalue
     Value& operator[](const Key& key) {
@@ -146,7 +156,6 @@ public:
             }
             current = current->next;
         } while (current != nullptr);
-        throw std::runtime_error("Failed to insert the new element"); // На всякий случай
     }
 
     // Rvalue

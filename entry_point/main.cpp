@@ -1,14 +1,15 @@
+#include "HashTableV1.hpp"
+#include "HashTableV2.hpp"
 #include "tests.hpp"
 #include <iostream>
 #include <string>
-
 using namespace std;
-#include "HashTableV1.hpp"
+
 
 void translate_sequence();
-static const HashTableV1<string, string> aminoacids("D:/oop_4_work_final/entry_point/aminoacids.txt");
+static const HashTableV2<string, string> aminoacids("D:/oop_4_work_final/entry_point/aminoacids.txt");
 int main() {
-    if (run_all_tests<HashTableV1<string, string>>() != 0) {
+    if (run_all_tests<HashTableV2<string, string>>() != 0) {
         return 1;
     }
     aminoacids.print();
@@ -18,7 +19,7 @@ int main() {
 
 void translate_sequence() {
     string input;
-    cout << "Enter codon sequence (each codon should be exactly 3 letters, e.g., UUU,UUC,UUA): ";
+    cout << "Enter nucleotide sequence (e.g., UUUUUCUUA):\n";
     cin >> input;
 
     vector<string> input_codons;

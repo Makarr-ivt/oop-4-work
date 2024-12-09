@@ -33,7 +33,7 @@ void translate_sequence() {
             codon.clear();
         }
     }
-    cout << "Amino acids sequence:'N";
+    cout << "Amino acids sequence:\n";
     for (const auto& codon : input_codons) {
         if (aminoacids.is_contains(codon)) {
             cout << aminoacids[codon] << endl;
